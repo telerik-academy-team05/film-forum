@@ -1,12 +1,12 @@
 package com.telerik.filmforum.models;
 
-import org.springframework.format.annotation.DateTimeFormat;
+import java.time.LocalDateTime;
 
 public class Post {
     private int id;
     private String title;
     private String content;
     private int authorId;
-    private DateTimeFormat createdAt;
-    private DateTimeFormat updatedAt;
+    private LocalDateTime createdAt;
+    private LocalDateTime updatedAt;
 }
