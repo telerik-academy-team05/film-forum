@@ -20,10 +20,10 @@ public class User {
     @Column(name = "password")
     private String password;
 
-    @Column(name = "firstName")
+    @Column(name = "first_name")
     private String firstName;
 
-    @Column(name = "lastName")
+    @Column(name = "last_name")
     private String lastName;
 
     @Column(name = "email")
@@ -41,7 +41,7 @@ public class User {
     private boolean isBlocked;
 
     @Column(name = "profile_photo_url")
-    private String profilePhotUrl;
+    private String profilePhotoUrl;
 
     public int getId() {
         return id;
@@ -108,11 +108,11 @@ public class User {
     }
 
     public String getProfilePhotUrl() {
-        return profilePhotUrl;
+        return profilePhotoUrl;
     }
 
     public void setProfilePhotUrl(String profilePhotUrl) {
-        this.profilePhotUrl = profilePhotUrl;
+        this.profilePhotoUrl = profilePhotUrl;
     }
 
     public Role getRole() {
