@@ -19,31 +19,31 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User getById(int id) {
-        return null;
+        return repository.getById(id);
     }
 
     @Override
-    public User getByName(String name) {
-        return null;
+    public User getByUsername(String userName) {
+        return repository.getByUsername(userName);
     }
 
     @Override
     public List<User> getAll() {
-        return List.of();
+        return repository.getAll();
     }
 
     @Override
     public void create(User user) {
-
+        repository.create(user);
     }
 
     @Override
     public void update(User user) {
-
+        repository.update(user);
     }
 
     @Override
     public void delete(int id) {
-
+        repository.delete(id);
     }
 }

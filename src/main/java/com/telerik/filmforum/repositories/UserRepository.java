@@ -8,7 +8,7 @@ public interface UserRepository {
 
     User getById(int id);
 
-    User getByUserName(String name);
+    User getByUsername(String userName);
 
     List<User> getAll();
 

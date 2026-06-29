@@ -8,7 +8,7 @@ public interface UserService {
 
     User getById(int id);
 
-    User getByName(String name);
+    User getByUsername(String userName);
 
     List<User> getAll();
 
