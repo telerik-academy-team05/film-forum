@@ -31,7 +31,7 @@ public class UserRepositoryImpl implements UserRepository {
     }
 
     @Override
-    public User getByUserName(String userName) {
+    public User getByUsername(String userName) {
         try (Session session = sessionFactory.openSession()) {
             User user = session.find(User.class, userName);
             if (user == null) {

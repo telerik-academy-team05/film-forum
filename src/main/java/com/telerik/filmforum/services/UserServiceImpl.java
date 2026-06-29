@@ -19,12 +19,12 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User getById(int id) {
-        return null;
+        return repository.getById(id);
     }
 
     @Override
-    public User getByName(String name) {
-        return null;
+    public User getByUsername(String userName) {
+        repository.getByUsername(userName)
     }
 
     @Override
