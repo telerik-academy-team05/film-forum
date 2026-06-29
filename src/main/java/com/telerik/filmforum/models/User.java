@@ -37,7 +37,7 @@ public class User {
     @Column(name = "phone")
     private String phoneNumber;
 
-    @Column(name = "isBlocked")
+    @Column(name = "is_blocked")
     private boolean isBlocked;
 
     @Column(name = "profile_photo_url")
@@ -107,12 +107,12 @@ public class User {
         isBlocked = blocked;
     }
 
-    public String getProfilePhotUrl() {
+    public String getProfilePhotoUrl() {
         return profilePhotoUrl;
     }
 
-    public void setProfilePhotUrl(String profilePhotUrl) {
-        this.profilePhotoUrl = profilePhotUrl;
+    public void setProfilePhotoUrl(String profilePhotoUrl) {
+        this.profilePhotoUrl = profilePhotoUrl;
     }
 
     public Role getRole() {
