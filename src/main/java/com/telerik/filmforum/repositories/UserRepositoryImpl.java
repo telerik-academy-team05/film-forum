@@ -2,8 +2,10 @@ package com.telerik.filmforum.repositories;
 
 import com.telerik.filmforum.exceptions.EntityNotFoundException;
 import com.telerik.filmforum.models.User;
+
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
+import org.hibernate.query.Query;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
@@ -31,13 +33,16 @@ public class UserRepositoryImpl implements UserRepository {
     }
 
     @Override
-    public User getByUsername(String userName) {
+    public User getByUsername(String username) {
         try (Session session = sessionFactory.openSession()) {
-            User user = session.find(User.class, userName);
-            if (user == null) {
-                throw new EntityNotFoundException("User", "username", userName);
+            Query<User> query = session.createQuery(
+                    "from User where username = :username", User.class);
+            query.setParameter("username", username);
+            List<User> result = query.list();
+            if (result.isEmpty()) {
+                throw new EntityNotFoundException("User", "username", username);
             }
-            return user;
+            return result.get(0);
         }
     }
 

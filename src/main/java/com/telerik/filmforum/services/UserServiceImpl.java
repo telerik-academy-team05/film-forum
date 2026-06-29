@@ -24,26 +24,26 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User getByUsername(String userName) {
-        repository.getByUsername(userName)
+        return repository.getByUsername(userName);
     }
 
     @Override
     public List<User> getAll() {
-        return List.of();
+        return repository.getAll();
     }
 
     @Override
     public void create(User user) {
-
+        repository.create(user);
     }
 
     @Override
     public void update(User user) {
-
+        repository.update(user);
     }
 
     @Override
     public void delete(int id) {
-
+        repository.delete(id);
     }
 }
