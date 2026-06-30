@@ -1,5 +1,6 @@
 package com.telerik.filmforum.services;
 
+<<<<<<< Updated upstream
 import com.telerik.filmforum.models.User;
 import com.telerik.filmforum.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -46,4 +47,10 @@ public class UserServiceImpl implements UserService {
     public void delete(int id) {
         repository.delete(id);
     }
+=======
+import org.springframework.stereotype.Service;
+
+@Service
+public class UserServiceImpl {
+>>>>>>> Stashed changes
 }
