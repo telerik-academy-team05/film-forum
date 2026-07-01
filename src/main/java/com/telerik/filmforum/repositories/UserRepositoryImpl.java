@@ -14,7 +14,7 @@ import java.util.List;
 @Repository
 public class UserRepositoryImpl implements UserRepository {
 
-    private SessionFactory sessionFactory;
+    private final SessionFactory sessionFactory;
 
     @Autowired
     public UserRepositoryImpl(SessionFactory sessionFactory) {
@@ -22,7 +22,7 @@ public class UserRepositoryImpl implements UserRepository {
     }
 
     @Override
-    public User getById(int id) {
+    public User getUserById(int id) {
         try (Session session = sessionFactory.openSession()) {
             User user = session.find(User.class, id);
             if (user == null) {
@@ -47,14 +47,14 @@ public class UserRepositoryImpl implements UserRepository {
     }
 
     @Override
-    public List<User> getAll() {
+    public List<User> getAllUsers() {
         try (Session session = sessionFactory.openSession()) {
             return session.createQuery("from User", User.class).list();
         }
     }
 
     @Override
-    public void create(User user) {
+    public void createUser (User user) {
         try (Session session = sessionFactory.openSession()){
             session.beginTransaction();
             session.persist(user);
@@ -63,7 +63,7 @@ public class UserRepositoryImpl implements UserRepository {
     }
 
     @Override
-    public void update(User user) {
+    public void updateUser (User user) {
         try (Session session = sessionFactory.openSession()){
             session.beginTransaction();
             session.merge(user);
@@ -73,8 +73,8 @@ public class UserRepositoryImpl implements UserRepository {
     }
 
     @Override
-    public void delete(int id) {
-        User user = getById(id);
+    public void deleteUser (int id) {
+        User user = getUserById(id);
         try (Session session = sessionFactory.openSession()){
             session.beginTransaction();
             session.remove(user);

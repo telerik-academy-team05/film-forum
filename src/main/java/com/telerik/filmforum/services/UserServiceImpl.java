@@ -1,6 +1,6 @@
 package com.telerik.filmforum.services;
 
-<<<<<<< Updated upstream
+
 import com.telerik.filmforum.models.User;
 import com.telerik.filmforum.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,46 +11,42 @@ import java.util.List;
 @Service
 public class UserServiceImpl implements UserService {
 
-    private UserRepository repository;
+    private UserRepository userRepository;
 
     @Autowired
     public UserServiceImpl(UserRepository repository) {
-        this.repository = repository;
+        this.userRepository = repository;
     }
 
     @Override
-    public User getById(int id) {
-        return repository.getById(id);
+    public User getUserById(int id) {
+        return userRepository.getUserById(id);
     }
 
     @Override
-    public User getByUsername(String userName) {
-        return repository.getByUsername(userName);
+    public User getByUsername(String username) {
+        return userRepository.getByUsername(username);
     }
 
     @Override
-    public List<User> getAll() {
-        return repository.getAll();
+    public List<User> getAllUsers() {
+        return userRepository.getAllUsers();
     }
 
     @Override
-    public void create(User user) {
-        repository.create(user);
+    public void createUser (User user) {
+        userRepository.createUser(user);
     }
 
     @Override
-    public void update(User user) {
-        repository.update(user);
+    public void updateUser(User user) {
+        userRepository.updateUser(user);
     }
 
     @Override
-    public void delete(int id) {
-        repository.delete(id);
+    public void deleteUser (int id) {
+        userRepository.deleteUser(id);
     }
-=======
-import org.springframework.stereotype.Service;
 
-@Service
-public class UserServiceImpl {
->>>>>>> Stashed changes
+
 }
