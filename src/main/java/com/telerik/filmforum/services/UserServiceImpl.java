@@ -1,6 +1,8 @@
 package com.telerik.filmforum.services;
 
 
+import com.telerik.filmforum.models.Role;
+import com.telerik.filmforum.models.RoleType;
 import com.telerik.filmforum.models.User;
 import com.telerik.filmforum.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,11 +13,13 @@ import java.util.List;
 @Service
 public class UserServiceImpl implements UserService {
 
-    private UserRepository userRepository;
+    private final UserRepository userRepository;
+    private final RoleService roleService;
 
     @Autowired
-    public UserServiceImpl(UserRepository repository) {
+    public UserServiceImpl(UserRepository repository, RoleService roleService) {
         this.userRepository = repository;
+        this.roleService = roleService;
     }
 
     @Override
@@ -35,6 +39,8 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public void createUser (User user) {
+        Role defaultRole = roleService.getRoleByType(RoleType.USER);
+        user.setRole(defaultRole);
         userRepository.createUser(user);
     }
 
