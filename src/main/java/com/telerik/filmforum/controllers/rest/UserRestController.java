@@ -5,6 +5,7 @@ import com.telerik.filmforum.exceptions.EntityDuplicateException;
 import com.telerik.filmforum.exceptions.EntityNotFoundException;
 import com.telerik.filmforum.helpers.AuthenticationHelper;
 import com.telerik.filmforum.helpers.AuthorizationHelper;
+import com.telerik.filmforum.helpers.UserMapper;
 import com.telerik.filmforum.models.Post;
 import com.telerik.filmforum.models.User;
 import com.telerik.filmforum.models.UserDto;
@@ -26,21 +27,24 @@ public class UserRestController {
     private final UserService userService;
     private final AuthenticationHelper authenticationHelper;
     private final AuthorizationHelper authorizationHelper;
+    private final UserMapper userMapper;
 
     @Autowired
     public UserRestController(UserService userService, AuthenticationHelper authenticationHelper,
-                              AuthorizationHelper authorizationHelper) {
+                              AuthorizationHelper authorizationHelper, UserMapper userMapper) {
         this.userService = userService;
         this.authenticationHelper = authenticationHelper;
         this.authorizationHelper = authorizationHelper;
+        this.userMapper = userMapper;
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<User> getUserById(@RequestHeader HttpHeaders headers, @PathVariable int id) {
+    public ResponseEntity<UserDto> getUserById(@RequestHeader HttpHeaders headers, @PathVariable int id) {
         try {
             User user = authenticationHelper.tryGetUser(headers);
             authorizationHelper.checkAccessPermissions(id, user);
-            return new ResponseEntity<>(userService.getUserById(id), HttpStatus.OK);
+            UserDto userDto = userMapper.toDto(userService.getUserById(id));
+            return new ResponseEntity<>(userDto, HttpStatus.OK);
         } catch (AuthorizationException e) {
             throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, e.getMessage());
         } catch (EntityNotFoundException e) {
@@ -49,25 +53,44 @@ public class UserRestController {
     }
 
     @PostMapping
-    public ResponseEntity<User> createUser(@Valid @RequestBody User user) {
+    public ResponseEntity<UserDto> createUser(@Valid @RequestBody UserDto userDto) {
         try {
+            User user = userMapper.fromDto(userDto);
             userService.createUser(user);
-            return ResponseEntity.ok(user);
+            return new ResponseEntity<>(userMapper.toDto(user), HttpStatus.CREATED);
         } catch (EntityDuplicateException e) {
             throw new ResponseStatusException(HttpStatus.CONFLICT, e.getMessage());
         }
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<UserDto> updateUser(@PathVariable int id, @Valid @RequestBody UserDto userDto) {
-        return new ResponseEntity<>(HttpStatus.NOT_IMPLEMENTED);
+    public ResponseEntity<UserDto> updateUser(@RequestHeader HttpHeaders headers, @PathVariable int id,
+                                              @Valid @RequestBody UserDto userDto) {
+        try {
+            User executingUser = authenticationHelper.tryGetUser(headers);
+            authorizationHelper.checkAccessPermissions(id, executingUser);
+            User user = userMapper.fromDto(id, userDto);
+            userService.updateUser(user);
+            return ResponseEntity.ok(userMapper.toDto(user));
+        } catch (EntityNotFoundException e) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());
+        } catch (AuthorizationException e) {
+            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, e.getMessage());
+        } catch (EntityDuplicateException e) {
+            throw new ResponseStatusException(HttpStatus.CONFLICT, e.getMessage());
+        }
+
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteUser(@PathVariable int id) {
+    public ResponseEntity<Void> deleteUser(@RequestHeader HttpHeaders headers, @PathVariable int id) {
         try {
+            User executingUser = authenticationHelper.tryGetUser(headers);
+            authorizationHelper.checkAccessPermissions(id, executingUser);
             userService.deleteUser(id);
             return ResponseEntity.noContent().build();
+        } catch (AuthorizationException e) {
+            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, e.getMessage());
         } catch (EntityNotFoundException e) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());
         }

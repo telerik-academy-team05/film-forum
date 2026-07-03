@@ -10,6 +10,8 @@ public interface UserService {
 
     User getByUsername(String username);
 
+    User getByEmail(String email);
+
     List<User> getAllUsers();
 
     void createUser (User user);

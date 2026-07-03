@@ -1,6 +1,8 @@
 package com.telerik.filmforum.services;
 
 
+import com.telerik.filmforum.exceptions.EntityDuplicateException;
+import com.telerik.filmforum.exceptions.EntityNotFoundException;
 import com.telerik.filmforum.models.Role;
 import com.telerik.filmforum.models.RoleType;
 import com.telerik.filmforum.models.User;
@@ -33,12 +35,24 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public User getByEmail(String email) {
+        return userRepository.getByEmail(email);
+    }
+
+
+    @Override
     public List<User> getAllUsers() {
         return userRepository.getAllUsers();
     }
 
     @Override
-    public void createUser (User user) {
+    public void createUser(User user) {
+        if (usernameExists(user.getUsername())) {
+            throw new EntityDuplicateException("User", "username", user.getUsername());
+        }
+        if (emailExists(user.getEmail())) {
+            throw new EntityDuplicateException("User", "email", user.getEmail());
+        }
         Role defaultRole = roleService.getRoleByType(RoleType.USER);
         user.setRole(defaultRole);
         userRepository.createUser(user);
@@ -46,13 +60,33 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public void updateUser(User user) {
+        User currentUser = getUserById(user.getId());
+        if (!currentUser.getEmail().equals(user.getEmail()) && emailExists(user.getEmail())) {
+            throw new EntityDuplicateException("User", "email", user.getEmail());
+        }
         userRepository.updateUser(user);
     }
 
     @Override
-    public void deleteUser (int id) {
+    public void deleteUser(int id) {
         userRepository.deleteUser(id);
     }
 
+    private boolean usernameExists(String username) {
+        try {
+            userRepository.getByUsername(username);
+            return true;
+        } catch (EntityNotFoundException e) {
+            return false;
+        }
+    }
 
+    private boolean emailExists(String email) {
+        try {
+            userRepository.getByEmail(email);
+            return true;
+        } catch (EntityNotFoundException e) {
+            return false;
+        }
+    }
 }
