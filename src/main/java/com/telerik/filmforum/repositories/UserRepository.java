@@ -10,12 +10,14 @@ public interface UserRepository {
 
     User getByUsername(String username);
 
+    User getByEmail(String email);
+
     List<User> getAllUsers();
 
-    void createUser (User user);
+    void createUser(User user);
 
-    void updateUser (User user);
+    void updateUser(User user);
 
-    void deleteUser (int id);
+    void deleteUser(int id);
 }
 
