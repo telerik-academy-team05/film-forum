@@ -38,7 +38,6 @@ public class CommentRepositoryImpl implements CommentRepository {
         }
     }
 
-    // Нов полезен метод: Вземане на коментари за конкретен пост чрез HQL заявка
     @Override
     public List<Comment> getByPostId(int postId) {
         try (Session session = sessionFactory.openSession()) {
