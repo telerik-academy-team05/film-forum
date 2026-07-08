@@ -1,0 +1,13 @@
+# Agent context (local only)
+AGENTS.md
+
+# Gradle
+.gradle/
+build/
+
+# IntelliJ
+.idea/
+*.iml
+
+# OS
+.DS_Store
