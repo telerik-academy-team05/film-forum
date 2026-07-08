@@ -3,6 +3,7 @@ package com.telerik.filmforum.models;
 import jakarta.persistence.*;
 
 import java.time.LocalDateTime;
+import java.util.Objects;
 
 @Entity
 @Table(name = "posts")
@@ -15,7 +16,7 @@ public class Post {
     @Column(name = "title")
     private String title;
 
-    @Column(name = "content")
+    @Column(name = "content", columnDefinition = "TEXT")
     private String content;
 
     @ManyToOne
@@ -77,5 +78,18 @@ public class Post {
 
     public void setUpdatedAt(LocalDateTime updatedAt) {
         this.updatedAt = updatedAt;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Post post = (Post) o;
+        return id == post.id;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id);
     }
 }
