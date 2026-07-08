@@ -6,6 +6,7 @@ import com.telerik.filmforum.exceptions.EntityNotFoundException;
 import com.telerik.filmforum.models.Role;
 import com.telerik.filmforum.models.RoleType;
 import com.telerik.filmforum.models.User;
+import com.telerik.filmforum.models.UserFilters;
 import com.telerik.filmforum.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -41,8 +42,8 @@ public class UserServiceImpl implements UserService {
 
 
     @Override
-    public List<User> getAllUsers() {
-        return userRepository.getAllUsers();
+    public List<User> getFilteredUsers(UserFilters userFilters) {
+        return userRepository.getFilteredUsers(userFilters);
     }
 
     @Override
@@ -89,4 +90,30 @@ public class UserServiceImpl implements UserService {
             return false;
         }
     }
+
+    @Override
+    public User promoteUserToAdmin(int id) {
+        Role adminRole = roleService.getRoleByType(RoleType.ADMIN);
+        User user = getUserById(id);
+        user.setRole(adminRole);
+        userRepository.updateUser(user);
+        return user;
+    }
+
+    @Override
+    public User blockUser(int id) {
+        User user = getUserById(id);
+        user.setBlocked(true);
+        userRepository.updateUser(user);
+        return user;
+    }
+
+    @Override
+    public User unblockUser(int id) {
+        User user = getUserById(id);
+        user.setBlocked(false);
+        userRepository.updateUser(user);
+        return user;
+    }
+
 }

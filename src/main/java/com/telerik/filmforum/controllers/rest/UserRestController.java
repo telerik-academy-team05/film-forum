@@ -6,9 +6,8 @@ import com.telerik.filmforum.exceptions.EntityNotFoundException;
 import com.telerik.filmforum.helpers.AuthenticationHelper;
 import com.telerik.filmforum.helpers.AuthorizationHelper;
 import com.telerik.filmforum.helpers.UserMapper;
-import com.telerik.filmforum.models.Post;
-import com.telerik.filmforum.models.User;
-import com.telerik.filmforum.models.UserDto;
+import com.telerik.filmforum.models.*;
+import com.telerik.filmforum.services.RoleService;
 import com.telerik.filmforum.services.UserService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -98,12 +97,28 @@ public class UserRestController {
     }
 
     @GetMapping
-    public ResponseEntity<List<User>> get(
-            @RequestParam(required = false) String name,
-            @RequestParam(required = false) String email,
-            @RequestParam(required = false) String firstName) {
+    public ResponseEntity<List<UserDto>> getFilteredUsers(@RequestHeader HttpHeaders headers,
+                                                          @RequestParam(required = false) String username,
+                                                          @RequestParam(required = false) String email,
+                                                          @RequestParam(required = false) String firstName,
+                                                          @RequestParam(required = false) String sortBy,
+                                                          @RequestParam(required = false) String sortOrder) {
 
-        return new ResponseEntity<>(HttpStatus.NOT_IMPLEMENTED);
+
+        try {
+            User user = authenticationHelper.tryGetUser(headers);
+            authorizationHelper.isAdmin(user);
+        } catch (AuthorizationException e) {
+            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, e.getMessage());
+        }
+
+        UserFilters userFilters = new UserFilters(username, email, firstName, sortBy, sortOrder);
+        List<UserDto> users = userService.getFilteredUsers(userFilters)
+                .stream()
+                .map(userMapper::toDto)
+                .toList();
+
+        return ResponseEntity.ok(users);
     }
 
 
@@ -114,20 +129,53 @@ public class UserRestController {
 
 
     @PutMapping("/{id}/promote")
-    public ResponseEntity<UserDto> promoteUserToAdmin(@PathVariable int id) {
-        return new ResponseEntity<>(HttpStatus.NOT_IMPLEMENTED);
+    public ResponseEntity<UserDto> promoteUserToAdmin(@RequestHeader HttpHeaders headers, @PathVariable int id) {
+        try {
+            User adminUser = authenticationHelper.tryGetUser(headers);
+            authorizationHelper.isAdmin(adminUser);
+            User promotedUser = userService.promoteUserToAdmin(id);
+
+            return ResponseEntity.ok(userMapper.toDto(promotedUser));
+
+        } catch (AuthorizationException e) {
+            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, e.getMessage());
+        } catch (EntityNotFoundException e) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());
+        }
     }
 
 
     @PutMapping("/{id}/block")
-    public ResponseEntity<UserDto> blockUser(@PathVariable int id) {
-        return new ResponseEntity<>(HttpStatus.NOT_IMPLEMENTED);
+    public ResponseEntity<UserDto> blockUser(@RequestHeader HttpHeaders headers, @PathVariable int id) {
+        try {
+            User adminUser = authenticationHelper.tryGetUser(headers);
+            authorizationHelper.isAdmin(adminUser);
+            User userToBlock = userService.blockUser(id);
+
+            return ResponseEntity.ok(userMapper.toDto(userToBlock));
+
+        } catch (AuthorizationException e) {
+            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, e.getMessage());
+        } catch (EntityNotFoundException e) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());
+        }
     }
 
 
     @PutMapping("/{id}/unblock")
-    public ResponseEntity<UserDto> unblockUser(@PathVariable int id) {
-        return new ResponseEntity<>(HttpStatus.NOT_IMPLEMENTED);
+    public ResponseEntity<UserDto> unblockUser(@RequestHeader HttpHeaders headers, @PathVariable int id) {
+        try {
+            User adminUser = authenticationHelper.tryGetUser(headers);
+            authorizationHelper.isAdmin(adminUser);
+            User userToUnblock = userService.unblockUser(id);
+
+            return ResponseEntity.ok(userMapper.toDto(userToUnblock));
+
+        } catch (AuthorizationException e) {
+            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, e.getMessage());
+        } catch (EntityNotFoundException e) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());
+        }
     }
 
 }

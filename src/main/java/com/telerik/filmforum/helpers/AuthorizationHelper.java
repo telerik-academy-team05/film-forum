@@ -14,4 +14,10 @@ public class AuthorizationHelper {
             throw new AuthorizationException(ERROR_MESSAGE);
         }
     }
+
+    public void isAdmin (User executingUser){
+        if (!executingUser.isAdmin()){
+            throw new AuthorizationException(ERROR_MESSAGE);
+        }
+    }
 }
