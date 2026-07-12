@@ -24,6 +24,17 @@ public class Comment {
     @JoinColumn(name = "post_id")
     private Post post;
 
+    // @Column(name = "content")
+    //    private String content;
+    //
+    //    @ManyToOne
+    //    @JoinColumn(name = "author_id")
+    //    private User author;
+    //
+    //    @ManyToOne
+    //    @JoinColumn(name = "post_id")
+    //    private Post post;   for DTO
+
     @Column(name = "created_at")
     private LocalDateTime createdAt;
 
