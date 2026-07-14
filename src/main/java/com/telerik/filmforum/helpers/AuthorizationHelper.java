@@ -7,16 +7,22 @@ import org.springframework.stereotype.Component;
 @Component
 public class AuthorizationHelper {
 
-    public static final String ERROR_MESSAGE = "You are not authorized to browse user information.";
+    public static final String ERROR_MESSAGE = "You are not authorized to do this action";
 
-    public void checkAccessPermissions (int targetUserId, User executingUser){
-        if (!executingUser.isAdmin() && targetUserId != executingUser.getId()){
+    public void checkAccessPermissions(int targetUserId, User executingUser) {
+        if (!executingUser.isAdmin() && targetUserId != executingUser.getId()) {
             throw new AuthorizationException(ERROR_MESSAGE);
         }
     }
 
-    public void isAdmin (User executingUser){
-        if (!executingUser.isAdmin()){
+    public void isAdmin(User executingUser) {
+        if (!executingUser.isAdmin()) {
+            throw new AuthorizationException(ERROR_MESSAGE);
+        }
+    }
+
+    public void isAuthor(User targetUser, User executingUser) {
+        if (targetUser.getId() != executingUser.getId()) {
             throw new AuthorizationException(ERROR_MESSAGE);
         }
     }
