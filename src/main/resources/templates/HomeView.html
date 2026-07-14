@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>FilmForum | Home</title>
+    <link rel="icon" type="image/png" href="/favicon.png">
+</head>
+<body>
+<header>
+<div>
+    <h3>
+        <a th:href="@{/login}" href="./Login.html">Login</a>
+    </h3>
+</div>
+</header>
+<h1>Welcome to Film Forum</h1>
+
+<p>A simple place to discuss movies, share opinions, and read what other film fans are watching.</p>
+
+<h2>Forum statistics</h2>
+<p>Total posts created so far: <strong th:text="${postsCount}">0</strong></p>
+
+<h2>Top 10 most commented posts</h2>
+<p th:if="${#lists.isEmpty(mostCommentedPosts)}">No posts yet.</p>
+<ol th:if="${!#lists.isEmpty(mostCommentedPosts)}">
+    <li th:each="post : ${mostCommentedPosts}">
+        <span th:text="${post.title}">Post title</span>
+    </li>
+</ol>
+
+<h2>10 most recently created posts</h2>
+<p th:if="${#lists.isEmpty(mostRecentPosts)}">No posts yet.</p>
+<ol th:if="${!#lists.isEmpty(mostRecentPosts)}">
+    <li th:each="post : ${mostRecentPosts}">
+        <span th:text="${post.title}">Post title</span>
+        <span th:if="${post.createdAt != null}">
+            - created at <span th:text="${#temporals.format(post.createdAt, 'HH:mm/dd.MM.yyyy')}">date</span>
+        </span>
+    </li>
+</ol>
+
+</body>
+</html>

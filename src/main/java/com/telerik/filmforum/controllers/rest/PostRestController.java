@@ -26,7 +26,6 @@ public class PostRestController {
     private final PostMapper postMapper;
     private final CommentService commentService;
     private final AuthenticationHelper authenticationHelper;
-    private final AuthorizationHelper authorizationHelper;
 
     @Autowired
     public PostRestController(PostService postService, PostMapper postMapper, CommentService commentService, AuthenticationHelper authenticationHelper,
@@ -35,7 +34,6 @@ public class PostRestController {
         this.postMapper = postMapper;
         this.commentService = commentService;
         this.authenticationHelper = authenticationHelper;
-        this.authorizationHelper = authorizationHelper;
     }
 
     @GetMapping
