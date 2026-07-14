@@ -3,6 +3,7 @@ package com.telerik.filmforum.models;
 import jakarta.persistence.*;
 
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Objects;
 
 @Entity
@@ -28,6 +29,9 @@ public class Post {
 
     @Column(name = "updated_at")
     private LocalDateTime updatedAt;
+
+    @OneToMany (mappedBy = "post")
+    private List<Comment> comments;
 
     public Post() {
     }
