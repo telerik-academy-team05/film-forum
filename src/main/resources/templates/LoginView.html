@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Film Forum | Login</title>
+    <link rel="stylesheet" th:href="@{/style.css}" href="/style.css">
+</head>
+<body>
+<header>
+    <div class="nav-links">
+        <a th:href="@{/}">Home</a>
+    </div>
+</header>
+<h1>Login</h1>
+<p class="error" th:if="${error != null}" th:text="${error}">Error</p>
+<form th:action="@{/login}" th:object="${loginDto}" method="post" class="form">
+
+    <label for="username">Username</label>
+    <input id="username" type="text" th:field="*{username}" required>
+
+    <label for="password">Password</label>
+    <input id="password" type="password" th:field="*{password}" required>
+
+    <button type="submit" class="button">Login</button>
+</form>
+</body>
+</html>
