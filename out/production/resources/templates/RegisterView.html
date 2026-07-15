@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Film Forum | Register</title>
+    <link rel="stylesheet" th:href="@{/style.css}" href="/style.css">
+</head>
+<body>
+<header>
+    <div class="nav-links">
+        <a th:href="@{/}">Home</a>
+    </div>
+</header>
+<h1>Create account</h1>
+
+<p class="error" th:if="${error != null}" th:text="${error}">Error</p>
+<form th:action="@{/register}" th:object="${userDto}" method="post" class="form">
+    <label for="username">Username <span class="required">*</span></label>
+    <input id="username" type="text" th:field="*{username}" required>
+    <p class="field-error" th:errors="*{username}">Username error</p>
+
+    <label for="password">Password <span class="required">*</span></label>
+    <input id="password" type="password" th:field="*{password}" required>
+    <p class="field-error" th:errors="*{password}">Password error</p>
+
+    <label for="firstName">First name <span class="required">*</span></label>
+    <input id="firstName" type="text" th:field="*{firstName}" required>
+    <p class="field-error" th:errors="*{firstName}">First name error</p>
+
+    <label for="lastName">Last name <span class="required">*</span></label>
+    <input id="lastName" type="text" th:field="*{lastName}" required>
+    <p class="field-error" th:errors="*{lastName}">Last name error</p>
+
+    <label for="email">Email <span class="required">*</span></label>
+    <input id="email" type="email" th:field="*{email}" required>
+    <p class="field-error" th:errors="*{email}">Email error</p>
+
+    <label for="phoneNumber">Phone</label>
+    <input id="phoneNumber" type="text" th:field="*{phoneNumber}">
+
+    <button type="submit" class="button">Register</button>
+</form>
+</body>
+</html>

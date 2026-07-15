@@ -9,6 +9,7 @@ import com.telerik.filmforum.helpers.UserMapper;
 import com.telerik.filmforum.models.*;
 import com.telerik.filmforum.services.RoleService;
 import com.telerik.filmforum.services.UserService;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
@@ -19,6 +20,7 @@ import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
 
+@Tag(name = "Users", description = "Operations for user registration, profile management and admin actions")
 @RestController
 @RequestMapping("/api/users")
 public class UserRestController {

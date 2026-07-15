@@ -8,6 +8,10 @@ import com.telerik.filmforum.helpers.PostMapper;
 import com.telerik.filmforum.models.*;
 import com.telerik.filmforum.services.CommentService;
 import com.telerik.filmforum.services.PostService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.enums.ParameterIn;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
@@ -18,6 +22,7 @@ import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
 
+@Tag(name = "Posts", description = "Operations for creating, viewing, updating and deleting posts")
 @RestController
 @RequestMapping("api/posts")
 public class PostRestController {
@@ -36,8 +41,15 @@ public class PostRestController {
         this.authenticationHelper = authenticationHelper;
     }
 
+    @Operation(summary = "Get all posts",
+            description = "Returns all posts with optional filtering by title, author and sorting.")
     @GetMapping
-    public ResponseEntity<List<PostDto>> getAllPosts(@RequestHeader HttpHeaders headers,
+    public ResponseEntity<List<PostDto>> getAllPosts(@Parameter(
+                                                             name = "Authorization",
+                                                             description = "Format: username password",
+                                                             required = true,
+                                                             in = ParameterIn.HEADER)
+                                                     @RequestHeader HttpHeaders headers,
                                                      @RequestParam(required = false) String title,
                                                      @RequestParam(required = false) String author,
                                                      @RequestParam(required = false) String sortBy,
