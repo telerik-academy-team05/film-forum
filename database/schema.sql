@@ -1,12 +1,12 @@
 CREATE TABLE roles
 (
-    role_id INTEGER PRIMARY KEY,
+    role_id INTEGER PRIMARY KEY AUTO_INCREMENT,
     role    VARCHAR(255) NOT NULL
 );
 
 CREATE TABLE users
 (
-    user_id           INTEGER PRIMARY KEY,
+    user_id           INTEGER PRIMARY KEY AUTO_INCREMENT,
     username          VARCHAR(255) UNIQUE NOT NULL,
     password          VARCHAR(255)        NOT NULL,
     first_name        VARCHAR(255)        NOT NULL,
@@ -23,7 +23,7 @@ CREATE TABLE users
 
 CREATE TABLE posts
 (
-    post_id    INTEGER PRIMARY KEY,
+    post_id    INTEGER PRIMARY KEY AUTO_INCREMENT,
     title      VARCHAR(255) NOT NULL,
     content    TEXT         NOT NULL,
     author_id  INTEGER      NOT NULL,
@@ -35,7 +35,7 @@ CREATE TABLE posts
 
 CREATE TABLE comments
 (
-    comment_id INTEGER PRIMARY KEY,
+    comment_id INTEGER PRIMARY KEY AUTO_INCREMENT,
     content    TEXT    NOT NULL,
     author_id  INTEGER NOT NULL,
     post_id    INTEGER NOT NULL,
@@ -49,7 +49,7 @@ CREATE TABLE comments
 
 CREATE TABLE likes
 (
-    like_id INTEGER PRIMARY KEY,
+    like_id INTEGER PRIMARY KEY AUTO_INCREMENT,
     post_id INTEGER NOT NULL,
     user_id INTEGER NOT NULL,
     CONSTRAINT fk_likes_post
@@ -61,7 +61,7 @@ CREATE TABLE likes
 
 CREATE TABLE tags
 (
-    tag_id   INTEGER PRIMARY KEY,
+    tag_id   INTEGER PRIMARY KEY AUTO_INCREMENT,
     tag_name VARCHAR(255) UNIQUE NOT NULL
 );
 
