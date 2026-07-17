@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <link rel="icon" type="image/png" href="/favicon.png">
+    <link rel="stylesheet" th:href="@{/style.css}" href="/style.css">
+    <title>FilmForum | Post</title>
+</head>
+<body>
+<header>
+    <nav class="nav">
+        <div class="nav-links">
+            <a th:href="@{/}">Home</a>
+            <a th:href="@{/posts}">Posts</a>
+            <a th:if="${currentUser != null}" th:href="@{/posts/new}">New post</a>
+            <form th:if="${currentUser != null}" th:action="@{/logout}" method="post" class="inline-form">
+                <button type="submit" class="link-button">Logout</button>
+            </form>
+        </div>
+    </nav>
+</header>
+
+<main class="container narrow">
+    <section class="panel">
+        <h1 th:text="${post == null} ? 'Create post' : 'Edit post'">Create post</h1>
+        <p class="error" th:if="${error != null}" th:text="${error}">Error</p>
+        <form th:action="${post == null} ? @{/posts} : @{/posts/{id}/edit(id=${post.id})}"
+              th:object="${postDto}"
+              method="post"
+              class="form">
+            <label for="title">Title</label>
+            <input id="title" type="text" th:field="*{title}" required>
+            <p class="field-error" th:errors="*{title}">Title error</p>
+
+            <label for="content">Content</label>
+            <textarea id="content" th:field="*{content}" rows="10" required></textarea>
+            <p class="field-error" th:errors="*{content}">Content error</p>
+
+            <button type="submit" class="button">Save post</button>
+        </form>
+    </section>
+</main>
+</body>
+</html>
