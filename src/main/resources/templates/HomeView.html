@@ -38,7 +38,7 @@
     <li th:each="post : ${mostRecentPosts}">
         <span th:text="${post.title}">Post title</span>
         <span th:if="${post.createdAt != null}">
-            - created at <span th:text="${#temporals.format(post.createdAt, 'HH:mm, dd.MM.yyyy')}">date</span>
+            - created at <span th:text="${#temporals.format(post.createdAt, 'HH:mm dd.MM.yyyy')}">date</span>
         </span>
     </li>
 </ol>
