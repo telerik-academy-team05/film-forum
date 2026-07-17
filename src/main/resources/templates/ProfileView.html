@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FilmForum | Profile</title>
+    <link rel="icon" type="image/png" href="/favicon.png">
+    <link rel="stylesheet" th:href="@{/style.css}" href="/style.css">
+</head>
+<body>
+<header>
+    <nav class="nav">
+        <a class="brand" th:href="@{/}">FilmForum</a>
+        <div class="nav-links">
+            <a th:href="@{/}">Home</a>
+            <a th:href="@{/posts}">Posts</a>
+            <a th:if="${currentUser != null and currentUser.admin}" th:href="@{/users}">Users</a>
+            <form th:action="@{/logout}" method="post" class="inline-form">
+                <button type="submit" class="link-button">Logout</button>
+            </form>
+        </div>
+    </nav>
+</header>
+
+<main class="container narrow">
+    <section class="panel profile">
+        <img th:if="${user.profilePhotoUrl != null and !#strings.isEmpty(user.profilePhotoUrl)}"
+             th:src="${user.profilePhotoUrl}"
+             alt="Profile photo">
+        <div>
+            <p class="eyebrow" th:text="${user.role != null ? user.role.roleType : 'USER'}">USER</p>
+            <h1 th:text="${user.username}">username</h1>
+            <p th:text="${user.firstName + ' ' + user.lastName}">Full name</p>
+            <p th:text="${user.email}">email</p>
+            <p th:if="${user.phoneNumber != null}" th:text="${user.phoneNumber}">phone</p>
+            <p class="warning" th:if="${user.blocked}">This account is blocked.</p>
+            <a class="button" th:href="@{/users/me/edit}">Edit profile</a>
+        </div>
+    </section>
+</main>
+</body>
+</html>

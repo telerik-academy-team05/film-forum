@@ -13,6 +13,8 @@
             <a th:href="@{/}">Home</a>
             <a th:href="@{/posts}">Posts</a>
             <a th:if="${currentUser != null}" th:href="@{/posts/new}">New post</a>
+            <a th:if="${currentUser != null}" th:href="@{/users/me}">Profile</a>
+            <a th:if="${currentUser != null and currentUser.admin}" th:href="@{/users}">Users</a>
             <form th:if="${currentUser != null}" th:action="@{/logout}" method="post" class="inline-form">
                 <button type="submit" class="link-button">Logout</button>
             </form>

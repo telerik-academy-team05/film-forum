@@ -197,15 +197,16 @@ li:hover {
 }
 
 .filters {
-    display: grid;
-    grid-template-columns: repeat(4, minmax(140px, 1fr)) auto auto;
+    display: flex;
+    flex-wrap: wrap;
     gap: 12px;
     align-items: center;
 }
 
 .filters input,
 .filters select {
-    width: 100%;
+    flex: 1 1 160px;
+    min-width: 150px;
     min-height: 46px;
     padding: 11px 13px;
     color: var(--text);
@@ -291,6 +292,7 @@ a.ghost:hover {
 }
 
 .filters .button {
+    flex: 0 0 auto;
     min-height: 46px;
     margin-top: 0;
     white-space: nowrap;
@@ -319,6 +321,154 @@ a.ghost:hover {
 
 .inline-form {
     display: inline;
+}
+
+/* Admin users page */
+.page-heading {
+    margin-top: 40px;
+    margin-bottom: 8px;
+}
+
+.page-heading h1 {
+    margin: 4px 0 0;
+    font-size: clamp(30px, 4vw, 44px);
+    line-height: 1.1;
+}
+
+.page-heading h1::after {
+    content: none;
+}
+
+.eyebrow {
+    margin: 0;
+    color: var(--accent-strong);
+    font-size: 13px;
+    font-weight: 800;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+}
+
+select {
+    width: 100%;
+    min-height: 46px;
+    padding: 11px 13px;
+    color: var(--text);
+    background: rgba(255, 255, 255, 0.72);
+    border: 1px solid rgba(100, 116, 139, 0.24);
+    border-radius: 14px;
+    font-size: 15px;
+    outline: none;
+    cursor: pointer;
+}
+
+select:focus {
+    border-color: rgba(249, 115, 22, 0.78);
+    box-shadow: 0 0 0 4px rgba(249, 115, 22, 0.16);
+}
+
+.table-wrap {
+    overflow-x: auto;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 15px;
+}
+
+thead th {
+    padding: 12px 14px;
+    text-align: left;
+    color: var(--muted);
+    font-size: 13px;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    border-bottom: 1px solid var(--border);
+    white-space: nowrap;
+}
+
+tbody td {
+    padding: 14px;
+    color: var(--text);
+    border-bottom: 1px solid rgba(15, 23, 42, 0.07);
+    vertical-align: middle;
+}
+
+tbody tr:last-child td {
+    border-bottom: none;
+}
+
+tbody tr:hover td {
+    background: rgba(255, 255, 255, 0.45);
+}
+
+.row-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+}
+
+.row-actions .inline-form,
+.row-actions form {
+    display: inline-flex;
+    margin: 0;
+}
+
+.small-button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0;
+    padding: 8px 14px;
+    border: 1px solid var(--border);
+    border-radius: 999px;
+    background: rgba(255, 255, 255, 0.66);
+    color: var(--text);
+    font-size: 13px;
+    font-weight: 700;
+    cursor: pointer;
+    white-space: nowrap;
+    transition: transform 140ms ease, filter 140ms ease, background 140ms ease;
+}
+
+.small-button:hover {
+    transform: translateY(-1px);
+    background: rgba(249, 115, 22, 0.12);
+}
+
+.small-button.warning-button {
+    background: #fef3c7;
+    border-color: #fcd34d;
+    color: #92400e;
+}
+
+.small-button.warning-button:hover {
+    background: #fde68a;
+}
+
+.small-button.danger-button {
+    background: var(--danger);
+    border-color: var(--danger);
+    color: white;
+}
+
+.small-button.danger-button:hover {
+    filter: brightness(1.05);
+    background: var(--danger);
+}
+
+.error-page {
+    margin-top: 64px;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+}
+
+.error-page .button {
+    margin-top: 20px;
 }
 
 .container {

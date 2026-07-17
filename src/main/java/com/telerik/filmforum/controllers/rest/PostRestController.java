@@ -68,6 +68,8 @@ public class PostRestController {
         return ResponseEntity.ok(posts);
     }
 
+    @Operation(summary = "Get post by id",
+            description = "Returns a single post by its id.")
     @GetMapping("/{id}")
     public ResponseEntity<PostDto> getPostById(@RequestHeader HttpHeaders headers, @PathVariable int id) {
         try {
@@ -81,6 +83,8 @@ public class PostRestController {
         }
     }
 
+    @Operation(summary = "Create post",
+            description = "Creates a new post authored by the authenticated user.")
     @PostMapping
     public ResponseEntity<PostDto> createPost(@RequestHeader HttpHeaders headers, @Valid @RequestBody PostDto postDto) {
         try {
@@ -94,6 +98,8 @@ public class PostRestController {
 
     }
 
+    @Operation(summary = "Update post",
+            description = "Updates an existing post. Only the author or an admin can update it.")
     @PutMapping("/{id}")
     public ResponseEntity<PostDto> updatePost(@RequestHeader HttpHeaders headers,
                                               @PathVariable int id,
@@ -110,6 +116,8 @@ public class PostRestController {
         }
     }
 
+    @Operation(summary = "Delete post",
+            description = "Deletes a post. Only the author or an admin can delete it.")
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deletePost(@RequestHeader HttpHeaders headers, @PathVariable int id) {
         try {
@@ -124,6 +132,8 @@ public class PostRestController {
         }
     }
 
+    @Operation(summary = "Get post comments",
+            description = "Returns all comments for a given post.")
     @GetMapping("/{id}/comments")
     public ResponseEntity<List<Comment>> getPostComments(@RequestHeader HttpHeaders headers, @PathVariable int id) {
         try {
@@ -135,11 +145,15 @@ public class PostRestController {
         }
     }
 
+    @Operation(summary = "Get posts count",
+            description = "Returns the total number of posts created so far.")
     @GetMapping("/count")
     public ResponseEntity<Long> getPostsCount() {
         return ResponseEntity.ok(postService.getPostsCount());
     }
 
+    @Operation(summary = "Get most commented posts",
+            description = "Returns the top 10 most commented posts.")
     @GetMapping("/most-commented")
     public ResponseEntity<List<PostDto>> getMostCommentedPosts() {
         List<PostDto> posts = postService.getMostCommentedPosts()
@@ -149,6 +163,8 @@ public class PostRestController {
         return ResponseEntity.ok(posts);
     }
 
+    @Operation(summary = "Get most recent posts",
+            description = "Returns the 10 most recently created posts.")
     @GetMapping("/most-recent")
     public ResponseEntity<List<PostDto>> getMostRecentPosts() {
         List<PostDto> posts = postService.getMostRecentPosts()
