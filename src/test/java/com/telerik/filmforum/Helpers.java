@@ -3,6 +3,7 @@ package com.telerik.filmforum;
 import com.telerik.filmforum.models.Role;
 import com.telerik.filmforum.models.RoleType;
 import com.telerik.filmforum.models.User;
+import com.telerik.filmforum.models.Post;
 
 /**
  * Small helper class for tests.
@@ -37,5 +38,14 @@ public class Helpers {
         user.setBlocked(false);
         user.setRole(createMockUserRole());
         return user;
+    }
+
+    public static Post createMockPost() {
+        Post post = new Post();
+        post.setId(1);
+        post.setTitle("This is a valid post title");
+        post.setContent("This is some valid post content for testing purposes.");
+        post.setAuthor(createMockUser());
+        return post;
     }
 }
