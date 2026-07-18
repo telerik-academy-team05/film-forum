@@ -48,8 +48,9 @@ public class AuthenticationMvcController {
             session.setAttribute("currentUser", user.getUsername());
             return "redirect:/";
         } catch (AuthorizationException e) {
-            model.addAttribute("error", e.getMessage());
-            return "LoginView";
+            model.addAttribute("loginError", e.getMessage());
+            model.addAttribute("userDto", new UserDto());
+            return "index";
         }
     }
 
@@ -59,19 +60,13 @@ public class AuthenticationMvcController {
         return "redirect:/";
     }
 
-    @GetMapping("/register")
-    public String showRegister(Model model) {
-        model.addAttribute("userDto", new UserDto());
-        return "RegisterView";
-    }
-
     @PostMapping("/register")
     public String register(@Valid @ModelAttribute("userDto") UserDto userDto,
                            BindingResult bindingResult,
                            HttpSession session,
                            Model model) {
         if (bindingResult.hasErrors()) {
-            return "RegisterView";
+            return "index";
         }
         try {
             User user = userMapper.fromDto(userDto);
@@ -79,7 +74,7 @@ public class AuthenticationMvcController {
             session.setAttribute("currentUser", user.getUsername());
             return "redirect:/";
         }catch (EntityDuplicateException e){
-            model.addAttribute("error", e.getMessage());
-            return "RegisterView";        }
+            model.addAttribute("registerError", e.getMessage());
+            return "index";        }
     }
 }

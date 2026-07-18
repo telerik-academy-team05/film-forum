@@ -44,6 +44,16 @@ body {
     margin-top: 25px;
 }
 
+.global-error {
+    background-color: rgba(220, 53, 69, 0.2); /* Лек червен фон за акцент */
+    border: 1px solid #ff6584;
+    padding: 10px;
+    border-radius: 6px;
+    text-align: center;
+    margin-bottom: 20px;
+    margin-top: 0;
+}
+
 .auth-container {
     display: flex;
     flex-direction: row;

@@ -15,6 +15,9 @@
     <!-- СЕКЦИЯ 1: ВХОД (LOGIN) -->
     <section class="auth-section login">
         <h2>Вход (Login)</h2>
+
+        <p class="error-msg global-error" th:if="${loginError != null}" th:text="${loginError}">Error message</p>
+
         <form th:action="@{/login}" method="post" class="auth-form">
 
             <label for="login-username">Потребителско име</label>
@@ -31,6 +34,7 @@
     <section class="auth-section register">
         <h2>Регистрация (Sign Up)</h2>
 
+        <p class="error-msg global-error" th:if="${registerError != null}" th:text="${registerError}">Error message</p>
         <!-- 1. Свързваме формата с обекта ${userDto}, който колежката ти е направила -->
         <form th:action="@{/register}" th:object="${userDto}" method="post" class="auth-form">
 
