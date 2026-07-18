@@ -1,10 +1,59 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <title>Film Forum | Posts</title>
+    <link rel="icon" type="image/png" href="/favicon.png">
+    <link rel="stylesheet" th:href="@{/style.css}" href="/style.css">
 </head>
 <body>
+<header>
+    <nav class="nav">
+        <div class="nav-links">
+            <a th:href="@{/}">Home</a>
+            <a th:if="${currentUser != null}" th:href="@{/posts/new}">New post</a>
+            <a th:if="${currentUser != null}" th:href="@{/users/me}">Profile</a>
+            <a th:if="${currentUser != null and currentUser.admin}" th:href="@{/users}">Users</a>
+            <form th:if="${currentUser != null}" th:action="@{/logout}" method="post" class="inline-form">
+                <button type="submit" class="link-button">Logout</button>
+            </form>
+        </div>
+    </nav>
+</header>
+
+<h1>Forum posts</h1>
+<section class="panel">
+    <form th:action="@{/posts}" method="get" class="filters">
+        <input type="text" name="title" placeholder="Search title" th:value="${title}">
+        <input type="text" name="author" placeholder="Search author" th:value="${author}">
+        <select name="sortBy">
+            <option value="">Sort by</option>
+            <option value="title" th:selected="${sortBy == 'title'}">Title</option>
+            <option value="createdAt" th:selected="${sortBy == 'createdAt'}">Created date</option>
+            <option value="author" th:selected="${sortBy == 'author'}">Author</option>
+        </select>
+        <select name="sortOrder">
+            <option value="asc" th:selected="${sortOrder == 'asc'}">Ascending</option>
+            <option value="desc" th:selected="${sortOrder == 'desc'}">Descending</option>
+        </select>
+        <button type="submit" class="button">Apply</button>
+        <a class="button" th:href="@{/posts}">Clear</a>
+    </form>
+</section>
+
+<section class="cards">
+    <p th:if="${#lists.isEmpty(posts)}">No posts match your search.</p>
+    <article class="post-card" th:each="post : ${posts}">
+        <div>
+            <h2><a th:href="@{/posts/{id}(id=${post.id})}" th:text="${post.title}">Post title</a></h2>
+            <p th:text="${post.content}">Post content</p>
+        </div>
+        <footer>
+            <span th:if="${post.author != null}" th:text="'by ' + ${post.author.username}">by author</span>
+            <span th:if="${post.createdAt != null}" th:text="${#temporals.format(post.createdAt, 'HH:mm dd.MM.yyyy')}">date</span>
+        </footer>
+    </article>
+</section>
 
 </body>
 </html>

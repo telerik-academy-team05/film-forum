@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FilmForum | Users</title>
+    <link rel="icon" type="image/png" href="/favicon.png">
+    <link rel="stylesheet" th:href="@{/style.css}" href="/style.css">
+</head>
+<body>
+<header>
+    <nav class="nav">
+        <div class="nav-links">
+            <a th:href="@{/}">Home</a>
+            <a th:href="@{/posts}">Posts</a>
+            <a th:href="@{/users/me}">Profile</a>
+            <form th:action="@{/logout}" method="post" class="inline-form">
+                <button type="submit" class="link-button">Logout</button>
+            </form>
+        </div>
+    </nav>
+</header>
+
+<main class="container">
+    <div class="page-heading">
+        <div>
+            <p class="eyebrow">Admin</p>
+            <h1>Users</h1>
+        </div>
+    </div>
+
+    <section class="panel">
+        <form th:action="@{/users}" method="get" class="filters">
+            <input type="text" name="username" placeholder="Username" th:value="${username}">
+            <input type="text" name="email" placeholder="Email" th:value="${email}">
+            <input type="text" name="firstName" placeholder="First name" th:value="${firstName}">
+            <select name="sortBy">
+                <option value="">Sort by</option>
+                <option value="username" th:selected="${sortBy == 'username'}">Username</option>
+                <option value="email" th:selected="${sortBy == 'email'}">Email</option>
+                <option value="firstName" th:selected="${sortBy == 'firstName'}">First name</option>
+            </select>
+            <select name="sortOrder">
+                <option value="asc" th:selected="${sortOrder == 'asc'}">Ascending</option>
+                <option value="desc" th:selected="${sortOrder == 'desc'}">Descending</option>
+            </select>
+            <button type="submit" class="button">Apply</button>
+            <a class="button ghost" th:href="@{/users}">Clear</a>
+        </form>
+    </section>
+
+    <section class="panel table-wrap">
+        <table>
+            <thead>
+            <tr>
+                <th>Username</th>
+                <th>Name</th>
+                <th>Email</th>
+                <th>Role</th>
+                <th>Status</th>
+                <th>Actions</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="user : ${users}">
+                <td th:text="${user.username}">username</td>
+                <td th:text="${user.firstName + ' ' + user.lastName}">name</td>
+                <td th:text="${user.email}">email</td>
+                <td th:text="${user.role != null ? user.role.roleType : 'USER'}">role</td>
+                <td th:text="${user.blocked ? 'Blocked' : 'Active'}">status</td>
+                <td class="row-actions">
+                    <form th:if="${user.role == null or user.role.roleType.name() != 'ADMIN'}"
+                          th:action="@{/users/{id}/promote(id=${user.id})}" method="post">
+                        <button type="submit" class="small-button">Promote</button>
+                    </form>
+                    <form th:if="${!user.blocked and user.id != currentUser.id}" th:action="@{/users/{id}/block(id=${user.id})}" method="post">
+                        <button type="submit" class="small-button warning-button">Block</button>
+                    </form>
+                    <form th:if="${user.blocked}" th:action="@{/users/{id}/unblock(id=${user.id})}" method="post">
+                        <button type="submit" class="small-button">Unblock</button>
+                    </form>
+                    <form th:if="${user.id != currentUser.id}" th:action="@{/users/{id}/delete(id=${user.id})}" method="post">
+                        <button type="submit" class="small-button danger-button">Delete</button>
+                    </form>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </section>
+</main>
+</body>
+</html>

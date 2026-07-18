@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Film Forum | Post</title>
+    <link rel="icon" type="image/png" href="/favicon.png">
+    <link rel="stylesheet" th:href="@{/style.css}" href="/style.css">
+</head>
+<body>
+<header>
+    <nav class="nav">
+        <div class="nav-links">
+            <a th:href="@{/}">Home</a>
+            <a th:href="@{/posts}">Posts</a>
+            <a th:if="${currentUser != null}" th:href="@{/posts/new}">New post</a>
+            <a th:if="${currentUser != null}" th:href="@{/users/me}">Profile</a>
+            <a th:if="${currentUser != null and currentUser.admin}" th:href="@{/users}">Users</a>
+            <form th:if="${currentUser != null}" th:action="@{/logout}" method="post" class="inline-form">
+                <button type="submit" class="link-button">Logout</button>
+            </form>
+        </div>
+    </nav>
+</header>
+
+<main class="container narrow">
+    <article class="panel post-details">
+        <p class="post-author" th:if="${post.author != null}"
+           th:text="'Posted by ' + ${post.author.username}">Posted by author</p>
+        <h1 class="post-title" th:text="${post.title}">Post title</h1>
+        <p class="meta" th:if="${post.createdAt != null}"
+           th:text="'Created ' + ${#temporals.format(post.createdAt, 'HH:mm dd.MM.yyyy')}">Created date</p>
+        <p class="content" th:text="${post.content}">Post content</p>
+        <div class="post-actions">
+            <a class="button secondary"
+               th:if="${currentUser != null and post.author != null and post.author.id == currentUser.id}"
+               th:href="@{/posts/{id}/edit(id=${post.id})}">Edit</a>
+            <form th:if="${currentUser != null and (currentUser.admin or (post.author != null and post.author.id == currentUser.id))}"
+                  th:action="@{/posts/{id}/delete(id=${post.id})}" method="post" class="inline-form">
+                <button type="submit" class="button danger">Delete</button>
+            </form>
+        </div>
+    </article>
+</main>
+</body>
+</html>

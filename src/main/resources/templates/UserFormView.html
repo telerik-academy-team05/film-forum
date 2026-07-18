@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FilmForum | Edit Profile</title>
+    <link rel="icon" type="image/png" href="/favicon.png">
+    <link rel="stylesheet" th:href="@{/style.css}" href="/style.css">
+</head>
+<body>
+<header>
+    <nav class="nav">
+        <a class="brand" th:href="@{/}">FilmForum</a>
+        <div class="nav-links">
+            <a th:href="@{/}">Home</a>
+            <a th:href="@{/posts}">Posts</a>
+            <a th:href="@{/users/me}">Profile</a>
+            <a th:if="${currentUser != null and currentUser.admin}" th:href="@{/users}">Users</a>
+            <form th:action="@{/logout}" method="post" class="inline-form">
+                <button type="submit" class="link-button">Logout</button>
+            </form>
+        </div>
+    </nav>
+</header>
+
+<main class="container narrow">
+    <section class="panel">
+        <h1>Edit profile</h1>
+        <p class="error" th:if="${error != null}" th:text="${error}">Error</p>
+        <form th:action="@{/users/me/edit}" th:object="${userDto}" method="post" class="form">
+            <label for="username">Username</label>
+            <input id="username" type="text" th:field="*{username}" readonly>
+
+            <label for="password">Password</label>
+            <input id="password" type="password" th:field="*{password}" required>
+            <p class="field-error" th:errors="*{password}">Password error</p>
+
+            <label for="firstName">First name</label>
+            <input id="firstName" type="text" th:field="*{firstName}" required>
+            <p class="field-error" th:errors="*{firstName}">First name error</p>
+
+            <label for="lastName">Last name</label>
+            <input id="lastName" type="text" th:field="*{lastName}" required>
+            <p class="field-error" th:errors="*{lastName}">Last name error</p>
+
+            <label for="email">Email</label>
+            <input id="email" type="email" th:field="*{email}" required>
+            <p class="field-error" th:errors="*{email}">Email error</p>
+
+            <label for="phoneNumber">Phone</label>
+            <input id="phoneNumber" type="text" th:field="*{phoneNumber}">
+
+            <label for="profilePhotoUrl">Profile photo URL</label>
+            <input id="profilePhotoUrl" type="text" th:field="*{profilePhotoUrl}">
+
+            <button type="submit" class="button">Save profile</button>
+        </form>
+    </section>
+</main>
+</body>
+</html>
