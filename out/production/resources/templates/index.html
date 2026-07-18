@@ -1,0 +1,87 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>FilmForum | Начало</title>
+    <link rel="stylesheet" th:href="@{/indexStyle.css}" href="/indexStyle.css">
+</head>
+
+<body>
+
+<!-- КОНТЕНТ ЗА ГОСТИ: Показва се само ако потребителят НЕ Е логнат -->
+<div th:if="${currentUser == null}" class="auth-container">
+
+    <!-- СЕКЦИЯ 1: ВХОД (LOGIN) -->
+    <section class="auth-section login">
+        <h2>Вход (Login)</h2>
+        <form th:action="@{/login}" method="post" class="auth-form">
+
+            <label for="login-username">Потребителско име</label>
+            <input type="text" id="login-username" name="username" placeholder="Въведи потребителско име" required>
+
+            <label for="login-password">Парола</label>
+            <input type="password" id="login-password" name="password" placeholder="Въведи парола" required>
+
+            <button type="submit" class="auth-btn">Влез</button>
+        </form>
+    </section>
+
+    <!-- СЕКЦИЯ 2: РЕГИСТРАЦИЯ (REGISTER) -->
+    <section class="auth-section register">
+        <h2>Регистрация (Sign Up)</h2>
+
+        <!-- 1. Свързваме формата с обекта ${userDto}, който колежката ти е направила -->
+        <form th:action="@{/register}" th:object="${userDto}" method="post" class="auth-form">
+
+            <!-- Username -->
+            <label for="reg-username">Потребителско име *</label>
+            <input type="text" id="reg-username" th:field="*{username}" placeholder="Избери потребителско име" required>
+            <!-- Червената грешка от Spring Validation -->
+            <p class="error-msg" th:if="${#fields.hasErrors('username')}" th:errors="*{username}">Username error</p>
+
+            <!-- Password -->
+            <label for="reg-password">Парола *</label>
+            <input type="password" id="reg-password" th:field="*{password}" placeholder="Създай сигурна парола" required>
+            <p class="error-msg" th:if="${#fields.hasErrors('password')}" th:errors="*{password}">Password error</p>
+
+            <!-- First Name -->
+            <label for="reg-firstname">First name *</label>
+            <input type="text" id="reg-firstname" th:field="*{firstName}" placeholder="Въведи име" required>
+            <p class="error-msg" th:if="${#fields.hasErrors('firstName')}" th:errors="*{firstName}">First name error</p>
+
+            <!-- Last Name -->
+            <label for="reg-lastname">Last name *</label>
+            <input type="text" id="reg-lastname" th:field="*{lastName}" placeholder="Въведи фамилия" required>
+            <p class="error-msg" th:if="${#fields.hasErrors('lastName')}" th:errors="*{lastName}">Last name error</p>
+
+            <!-- Email -->
+            <label for="reg-email">Имейл *</label>
+            <input type="email" id="reg-email" th:field="*{email}" placeholder="Въведи имейл адрес" required>
+            <p class="error-msg" th:if="${#fields.hasErrors('email')}" th:errors="*{email}">Email error</p>
+
+            <!-- Phone (Забележи:phoneNumber, както е в нейния код) -->
+            <label for="reg-phone">Phone</label>
+            <input type="text" id="reg-phone" th:field="*{phoneNumber}" placeholder="Въведи телефонен номер">
+
+            <button type="submit" class="auth-btn" style="background-color: #28a745; color: white;">Регистрирай се</button>
+        </form>
+    </section>
+
+</div>
+
+
+<!-- КОНТЕНТ ЗА ВПИСАНИ ПОТРЕБИТЕЛИ: Показва се само ако потребителят ВЕЧЕ Е логнат -->
+<div th:if="${currentUser != null}" class="already-logged-in">
+    <h2>Здравейте, <span th:text="${currentUser.username}">Потребител</span>!</h2>
+    <p>Вие вече сте вписани в системата.</p>
+    <div class="logged-actions">
+        <a th:href="@{/posts}" class="auth-btn" style="text-decoration: none; text-align: center;">Към Постовете</a>
+        <form th:action="@{/logout}" method="post" class="inline-form">
+            <button type="submit" class="auth-btn" style="background-color: #dc3545; color: white;">Изход (Logout)</button>
+        </form>
+    </div>
+</div>
+
+</body>
+</html>

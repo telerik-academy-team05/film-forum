@@ -1,5 +1,6 @@
 package com.telerik.filmforum.controllers.mvc;
 
+import com.telerik.filmforum.models.UserDto;
 import com.telerik.filmforum.services.PostService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -17,11 +18,12 @@ public class HomeMvcController {
     }
 
     @GetMapping("/")
-    public String home(Model model){
+    public String home(Model model) {
+        model.addAttribute("userDto", new UserDto());
         model.addAttribute("postsCount", postService.getPostsCount());
         model.addAttribute("mostCommentedPosts", postService.getMostCommentedPosts());
         model.addAttribute("mostRecentPosts", postService.getMostRecentPosts());
-        return "HomeView";
+        return "index";
     }
 
 }

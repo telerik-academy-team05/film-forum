@@ -10,7 +10,6 @@
 <header>
 <div class="nav-links">
         <a th:if="${currentUser == null}" th:href="@{/login}" href="LoginView.html">Login</a>
-        <a th:if="${currentUser == null}" th:href="@{/register}" href="RegisterView.html">Register</a>
         <a th:if="${currentUser != null}" th:href="@{/posts}" href="PostListView.html.html">Posts</a>
     <form th:if="${currentUser != null}" th:action="@{/logout}" method="post" class="inline-form">
         <button type="submit" class="link-button">Logout</button>
